@@ -1807,7 +1807,8 @@ CREATE TABLE "#__template_styles" (
   PRIMARY KEY ("id")
 );
 CREATE INDEX "#__template_styles_idx_template" ON "#__template_styles" ("template");
-CREATE INDEX "#__template_styles_idx_home" ON "#__template_styles" ("home");
+CREATE INDEX "#__template_styles_idx_client_id" ON "#__template_styles" ("client_id");
+CREATE INDEX "#__template_styles_idx_client_id_home" ON "#__template_styles" ("client_id", "home");
 
 --
 -- Dumping data for table #__template_styles
@@ -2054,6 +2055,7 @@ CREATE INDEX "#__users_idx_name" ON "#__users" ("name");
 CREATE INDEX "#__users_idx_block" ON "#__users" ("block");
 CREATE INDEX "#__users_username" ON "#__users" ("username");
 CREATE INDEX "#__users_email" ON "#__users" ("email");
+CREATE INDEX "#__users_email_lower" ON "#__users" (lower("email"));
 
 COMMENT ON COLUMN "#__users"."lastResetTime" IS 'Date of last password reset';
 COMMENT ON COLUMN "#__users"."resetCount" IS 'Count of password resets since lastResetTime';

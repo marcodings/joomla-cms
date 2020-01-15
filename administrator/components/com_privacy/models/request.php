@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Router\Route;
+
 /**
  * Request item model class.
  *
@@ -260,7 +262,7 @@ class PrivacyModelRequest extends JModelAdmin
 			$db->getQuery(true)
 				->select('id')
 				->from($db->quoteName('#__users'))
-				->where($db->quoteName('email') . ' = ' . $db->quote($table->email)),
+				->where('LOWER(' . $db->quoteName('email') . ') = LOWER(' . $db->quote($table->email) . ')'),
 			0,
 			1
 		)->loadResult();
@@ -311,13 +313,13 @@ class PrivacyModelRequest extends JModelAdmin
 		{
 			$app = JFactory::getApplication();
 
-			$linkMode = $app->get('force_ssl', 0) == 2 ? 1 : -1;
+			$linkMode = $app->get('force_ssl', 0) == 2 ? Route::TLS_FORCE : Route::TLS_IGNORE;
 
 			$substitutions = array(
 				'[SITENAME]' => $app->get('sitename'),
 				'[URL]'      => JUri::root(),
-				'[TOKENURL]' => JRoute::link('site', 'index.php?option=com_privacy&view=confirm&confirm_token=' . $token, false, $linkMode),
-				'[FORMURL]'  => JRoute::link('site', 'index.php?option=com_privacy&view=confirm', false, $linkMode),
+				'[TOKENURL]' => JRoute::link('site', 'index.php?option=com_privacy&view=confirm&confirm_token=' . $token, false, $linkMode, true),
+				'[FORMURL]'  => JRoute::link('site', 'index.php?option=com_privacy&view=confirm', false, $linkMode, true),
 				'[TOKEN]'    => $token,
 				'\\n'        => "\n",
 			);
